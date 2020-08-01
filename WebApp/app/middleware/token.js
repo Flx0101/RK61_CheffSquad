@@ -3,9 +3,20 @@ const config = require('./../config');
 
 let checkToken = (req, res, next) => {
     let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-
+    if(token == null){
+        return res.json({
+            success: false,
+            message: 'Auth token is not supplied',
+        });
+    }
     if (token.startsWith('Bearer ')) {
         token = token.slice(7, token.length);
+    }
+    else{
+        return res.json({
+            success: false,
+            message: 'Auth token is not supplied',
+        });
     }
 
     if (token) {

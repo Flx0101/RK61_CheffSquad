@@ -1,34 +1,35 @@
 
 let select = ``;
 
+let url = `https://245fe4366bf5.ngrok.io/`;
 function radioVal(event) {
-    select = event.target.value
+    select = event.target.value;
     console.log(select)
 }
 
 async function signIn() {
-    let result = ''
+    console.log("inside sign in")
+    // let result = ''
     let data = {
         email: document.getElementById('email').value,
         psd: document.getElementById('password').value,
     }
     console.log(data)
-
+    console.log("inside sign in")
      switch(select){
          case "Lawyer":{
              result = await axios({
-                 url: 'http://127.0.0.1:3000/lawyerLogin',
+                 url: url+'lawyerLogin',
                  method:'POST',
                  headers: {"content-type": 'application/json' },
                  data: data
              })
-             console.log(data+"inside lawyer");
+             console.log(data+"inside lawyer")
              break
-
          }
          case "Police":{
              result = await axios({
-                 url: 'http://127.0.0.1:3000/policeColl',
+                 url: url+'policeColl',
                  method:'POST',
                  headers: {"content-type": 'application/json' },
                  data: data
@@ -39,7 +40,7 @@ async function signIn() {
 
          case "Judge":{
              result = await axios({
-                 url: 'http://127.0.0.1:3000/judgeLogin',
+                 url: url+'judgeLogin',
                  method:'POST',
                  headers: {"content-type": 'application/json' },
                  data: data
@@ -49,7 +50,7 @@ async function signIn() {
          }
          case "User":{
              result = await axios({
-                 url: 'http://127.0.0.1:3000/login',
+                 url: url+'login',
                  method:'POST',
                  headers: {"content-type": 'application/json' },
                  data: data
@@ -59,7 +60,7 @@ async function signIn() {
          }
      }
      localStorage.setItem("token",result.data.token);
-    history.push('/dashboard')
+
 }
 
 async function register () {
@@ -68,10 +69,10 @@ async function register () {
         username: document.getElementById('name').value,
         email: document.getElementById('emailId').value,
         psw: document.getElementById('pass').value,
-        // category: select
+        category: select
     }
     result = await axios({
-        url: 'http://127.0.0.1:3000/register',
+        url: url+'register',
         method:'POST',
         headers: {"content-type": 'application/json' },
         data: data

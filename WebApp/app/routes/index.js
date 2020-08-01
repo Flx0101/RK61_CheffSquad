@@ -13,11 +13,18 @@ const { render } = require('ejs');
 const routes = require('./../helpers').router;
 const Case = require('./../models/case');
 const Meeting = require('./../models/meeting');
+let memberMiddleware = require('./../middleware/videoAuth');
 
+//checking authenticated user and valid member for the meeting
+
+//  https://fb7fa2aa984f.ngrok.io/video?room=temp_1923220304
+
+
+routes.get('/video' ,middleware.checkToken,memberMiddleware.memberCheck,(req , res , next) => {
+    res.send("hello");
+});
 
 routes.get('/cases', middleware.checkToken, (req, res, next) => {
-console.log("helo");
-//decoded value : req.decoded;
 let email = req.decoded.email;
 
 MongoClient.connect(config.dbURI, (err, client) => {
@@ -108,9 +115,6 @@ module.exports = () => {
             '/dashboard': (req, res, next) => {
                 res.render('dashboard');
             },
-            '/video': (req, res, next) => {
-                console.log("reached to video page");
-            },
             '/logout': (req, res, next) => {
                 req.logout();
                 res.redirect('/');
@@ -173,21 +177,19 @@ module.exports = () => {
                                     message: "Authenticated,GG",
                                     token: token
                                 });
-                                //Call the page instead of JSON
-                                //return res.redirect('/dashboard/');
                             } else {
                                 res.send(401).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
-                                //return res.redirect('/asd');
                             }
-
-
                         }).catch((err) => {
-                                success : false,
-                                error_status : true,
+                            res.status(500).json({
+
+                                "success" : false,
+                                "error_status" : true,
                                 "message" : err
+                            })
                         });
                 });
 
@@ -205,22 +207,18 @@ module.exports = () => {
                             console.log(det.password);
                             if (doc.password == det.password) {
                                 let token = jwt.sign({ email: det.email },
-                                    config.secret, { expiresIn: '24h' }
+                                    config.secret, { expiresIn: '1h' }
                                 );
-
                                 res.json({
                                     success: true,
                                     message: "Authenticated,GG",
                                     token: token
                                 });
-                                //Call the page instead of JSON
-                                //return res.redirect('/dashboard/');
                             } else {
                                 res.send(403).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
-                                //return res.redirect('/asd');
                             }
 
 
@@ -256,17 +254,12 @@ module.exports = () => {
                                     message: "Authenticated,GG",
                                     token: token
                                 });
-                                //Call the page instead of JSON
-                                //return res.redirect('/dashboard/');
                             } else {
                                 res.send(403).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
-                                //return res.redirect('/asd');
                             }
-
-
                         }).catch((err) => {
                             console.log(err);
                         });
@@ -294,14 +287,11 @@ module.exports = () => {
                                     message: "Authenticated,GG",
                                     token: token
                                 });
-                                //Call the page instead of JSON
-                                //return res.redirect('/dashboard/');
                             } else {
                                 res.send(403).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
-                                //return res.redirect('/asd');
                             }
 
 
