@@ -23,3 +23,4 @@ EVarta is a Smart remote-interactions platform being developed by team ***"Cheff
 
 ### Pre-requisites
 1. The machine must have latest version of NodeJs installed on a linux/windows environment
+2. To run the DesktopApp you must first run the WebApp on your server or in local environment
