@@ -1,8 +1,9 @@
 # CheffSquad
 
-##Evarta
+## Evarta
 EVarta is a Smart remote-interaction platform being developed by team ***"CheffSquad"*** as a solution to the proble **"RK-61"** under **SIH-2020** floated by Bureau of Police Research and Development. 
-###Structure of Repository
+
+### Structure of Repository
 |File/Directory|Purpose|
 |--------------|-------|
 |WebApp|Contains source code for webapp version of the platform that runs on server|
