@@ -3,9 +3,7 @@ const express = require('express');
 const app = express();
 const chatConf = require('./app');
 const port = process.env.PORT || 3000;
-const stream = require('./app/socket');
 var path = require('path');
-let favicon = require('serve-favicon');
 const cors = require('cors');
 
 
