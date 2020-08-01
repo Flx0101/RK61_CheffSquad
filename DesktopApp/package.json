@@ -1,0 +1,61 @@
+{
+  "name": "basic-electron-react-boilerplate",
+  "version": "0.7.0",
+  "description": "Minimal and modern react+electron+webpack boilerplate",
+  "author": "Phillip Barbiero",
+  "homepage": "https://github.com/pbarbiero/basic-electron-react-boilerplate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pbarbiero/basic-electron-react-boilerplate.git"
+  },
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
+    "dev": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
+    "build": "webpack --config webpack.build.config.js",
+    "package": "webpack --config webpack.build.config.js",
+    "postpackage": "electron-packager ./ --out=./builds"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-react": "^6.24.1",
+    "babili-webpack-plugin": "^0.1.2",
+    "css-loader": "^3.2.0",
+    "electron": "^7.3.2",
+    "electron-packager": "^14.1.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^5.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.5.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-modal": "^3.11.2",
+    "react-router-dom": "^5.2.0",
+    "style-loader": "^1.0.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
+    "multiselect-react-dropdown": "^1.5.7",
+    "popper.js": "^1.16.1",
+    "react-bootstrap": "^1.2.2",
+    "react-router": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  }
+}
