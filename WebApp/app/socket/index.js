@@ -1,5 +1,6 @@
 const stream = (socket) => {
     socket.on('subscribe', (data) => {
+        //subscribe/join a room
         socket.join(data.room);
         socket.join(data.socketId);
 
@@ -10,5 +11,28 @@ const stream = (socket) => {
         }
     });
 
-}
+
+    socket.on('newUserStart', (data) => {
+        socket.to(data.to).emit('newUserStart', { sender: data.sender });
+    });
+
+
+    socket.on('sdp', (data) => {
+        console.log("Data Address finding: " + data.sender);
+        socket.to(data.to).emit('sdp', { description: data.description, sender: data.sender });
+    });
+
+
+    socket.on('ice candidates', (data) => {
+        console.log("Data canditate: " + data.candidate);
+        socket.to(data.to).emit('ice candidates', { candidate: data.candidate, sender: data.sender });
+    });
+
+
+    socket.on('chat', (data) => {
+        console.log("Data room: " + data.room);
+        socket.to(data.room).emit('chat', { sender: data.sender, msg: data.msg });
+    });
+};
+
 module.exports = stream;
