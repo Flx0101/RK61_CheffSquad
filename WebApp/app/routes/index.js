@@ -16,49 +16,56 @@ const Meeting = require('./../models/meeting');
 
 
 routes.get('/cases', middleware.checkToken, (req, res, next) => {
-    console.log("helo");
-    //decoded value : req.decoded;
-    let email = req.decoded.email;
+console.log("helo");
+//decoded value : req.decoded;
+let email = req.decoded.email;
 
-    MongoClient.connect(config.dbURI, (err, client) => {
-        console.log(email);
-        client.db(config.dbName).collection(config.casesColl).find({
-                "members": email
-            }).toArray()
-            .then((doc) => {
-                console.log(doc);
-                res.json(doc);
+MongoClient.connect(config.dbURI, (err, client) => {
+    console.log(email);
+    client.db(config.dbName).collection(config.casesColl).find({
+            "members": email
+        }).toArray()
+        .then((doc) => {
+            console.log(doc);
+            res.json(doc);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                "message": "Fetching failed",
+                "description": err
             })
-            .catch((err) => {
-                console.log(err);
-                res.status(400).json({
-                    "message": "Fetching failed",
-                    "description": err
-                })
-            });
+        });
 
-    });
+});
 });
 
 routes.post('/registerCase', (req, res, next) => {
     var det = new Case({
-        description: req.body.desc,
-        date: req.body.date,
-        members: req.body.members
-    });
-    det.date = new Date(det.date);
-    console.log(det);
-    console.log(typeof(det.date));
-    MongoClient.connect(config.dbURI, (err, client) => {
-        client.db(config.dbName).collection(config.casesColl).insertOne(det)
-            .then((det) => {
-                console.log(det);
-                res.status(200).json({
-                    "msg": "Successfully registered",
+            description: req.body.desc,
+            date: req.body.date,
+            members: req.body.members
+        });
+        det.date = new Date(det.date);
+        console.log(det);
+        console.log(typeof(det.date));
+        MongoClient.connect(config.dbURI, (err, client) => {
+            client.db(config.dbName).collection(config.casesColl).insertOne(det)
+                .then((det) => {
+                    console.log(det);
+                    res.status(200).json({
+                        "success" : true,
+                        "msg": "Successfully registered",
+                    })
+                    .catch((err) => {
+                        res.status(500).json({
+                            "success" : false,
+                            "message" : "Failed to upload"
+                        })
+                    })
                 })
-            })
-            .catch((err) => console.log(err));
-    });
+                .catch((err) => console.log(err));
+        });
 
 });
 
@@ -76,12 +83,15 @@ routes.post("/registerMeeting", middleware.checkToken, (req, res, next) => {
         client.db(config.dbName).collection(meetingColl).insertOne(det)
             .then((det) => {
                 console.log(det._doc);
-                res.status(200).json("Meeting Registered");
+                res.status(200).json({
+                    success : true,
+                    "message" : "Meeting Registered"});
             })
             .catch((err) => {
-                res.status(400).json({
+                res.status(403).json({
                     "message": "Error occured",
-                    "Detail": err
+                    "Detail": err , 
+                    "success" : false
                 });
             })
     });
@@ -134,7 +144,10 @@ module.exports = () => {
                     client.db(config.dbName).collection(category).insertOne(det)
                         .then((det) => {
                             console.log("Saved");
-                            return res.status(200).send({ message: "Done" });
+                            return res.status(200).send({ 
+                                message: "Done" 
+                                ,success : true
+                            });
                         }).catch(err => console.log(err));
                 });
 
@@ -163,7 +176,7 @@ module.exports = () => {
                                 //Call the page instead of JSON
                                 //return res.redirect('/dashboard/');
                             } else {
-                                res.send(403).json({
+                                res.send(401).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
@@ -172,7 +185,9 @@ module.exports = () => {
 
 
                         }).catch((err) => {
-                            console.log(err);
+                                success : false,
+                                error_status : true,
+                                "message" : err
                         });
                 });
 
@@ -210,6 +225,11 @@ module.exports = () => {
 
 
                         }).catch((err) => {
+                            res.status(500).json({
+                                success : false,
+                                error_status : true,
+                                "message" : err
+                            })
                             console.log(err);
                         });
                 });
