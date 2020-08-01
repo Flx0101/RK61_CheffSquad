@@ -1,15 +1,17 @@
 # CheffSquad
 
-##Evarta
+## Evarta
+
 EVarta is a Smart remote-interactions platform being developed by team ***"CheffSquad"*** as a solution to the proble **"RK-61"** under **SIH-2020** floated by bureau of Police Research and Development. 
-###Structure of Repository
+
+### Structure of Repository
 |File/Directory|Purpose|
 |--------------|-------|
 |WebApp|Contains source code for webapp version of the platform that runs on server|
 |DesktopApp| Contains source code for Desktop-app of the platform with build instructions|
 |Readme| Contains information about directory structre of the repository and general deployment instructions|
 
-### How to run the platform
+### How to run the platform###
 1. On your server machine clone this repository using `git clone https://github.com/Flx0101/CheffSquad.git` in your terminal/command prompt.
 2. Enter the WebApp directory with `cd WebApp`
 3. Install the dependancies with `npm install`
