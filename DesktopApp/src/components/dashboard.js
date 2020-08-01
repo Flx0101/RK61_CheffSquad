@@ -6,31 +6,10 @@ import Modal from "react-bootstrap/Modal";
 import {Multiselect} from "multiselect-react-dropdown";
 import $ from 'jquery';
 import {useHistory} from "react-router-dom";
-import helpers from '../assets/js/helpers';
 import { faCalendarDay, faShareSquare, faCopy} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 var roomLink="roomLink";
-function load(url) {
-    return new Promise(function(resolve, reject) {
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = url;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    })
-  }
-  
-  load('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js')
-    .then(function() {
-      console.log('Loaded!');
-    })
-    .catch(function(err) {
-      console.error('Something went wrong!', err);
-    })
-
 let data, selectMeetingPurposeRadio, selectMeetingTypeRadio,  selectedValue = []
 
 
