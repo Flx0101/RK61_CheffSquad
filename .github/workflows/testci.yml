@@ -24,7 +24,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
-        node-version: 4.2.2
+        node-version: 12.18.3
     - run: |
            cd WebApp
            npm install
