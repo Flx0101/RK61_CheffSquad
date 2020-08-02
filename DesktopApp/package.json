@@ -1,14 +1,12 @@
 {
-  "name": "basic-electron-react-boilerplate",
-  "version": "0.7.0",
-  "description": "Minimal and modern react+electron+webpack boilerplate",
-  "author": "Phillip Barbiero",
-  "homepage": "https://github.com/pbarbiero/basic-electron-react-boilerplate",
+  "name": "multi-video-conferencing-application-on-electron",
+  "version": "1.0.0",
+  "description": "A Desktop Application and Web Application for Secure Video Conferencing for Judicial Systems ",
+  "homepage": "https://github.com/Flx0101/RK61_CheffSquad",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pbarbiero/basic-electron-react-boilerplate.git"
+    "url": "https://github.com/Flx0101/RK61_CheffSquad.git"
   },
-  "license": "MIT",
   "main": "main.js",
   "scripts": {
     "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
