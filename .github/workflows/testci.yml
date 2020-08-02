@@ -28,11 +28,9 @@ jobs:
     - run: |
            cd WebApp
            npm install
+           npm run start
            
     - run: |
            cd DesktopApp
            npm install
            npm run dev
-           npm run package
-           npm run build
-           npm run prod
