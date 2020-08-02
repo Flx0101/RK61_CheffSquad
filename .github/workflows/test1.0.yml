@@ -25,7 +25,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 4.2.2
-    - run: cd WebApp  
-    - run: npm install
+    - run: |
+            cd WebApp  
+            npm install
 
     
