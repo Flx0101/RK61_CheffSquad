@@ -9,7 +9,7 @@
     "author": "",
     "license": "ISC",
     "engines": {
-        "node": "4.2.2"
+        "node": "12.18.3"
     },
     "dependencies": {
         "connect-mongo": "^3.2.0",

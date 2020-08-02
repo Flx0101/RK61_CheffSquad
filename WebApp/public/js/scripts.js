@@ -1,7 +1,7 @@
-
 let select = ``;
 
-let url = `https://245fe4366bf5.ngrok.io/`;
+let url = `https://c91a104e252f.ngrok.io`;
+
 function radioVal(event) {
     select = event.target.value;
     console.log(select)
@@ -9,61 +9,65 @@ function radioVal(event) {
 
 async function signIn() {
     console.log("inside sign in")
-    // let result = ''
+        // let result = ''
     let data = {
         email: document.getElementById('email').value,
         psd: document.getElementById('password').value,
     }
     console.log(data)
     console.log("inside sign in")
-     switch(select){
-         case "Lawyer":{
-             result = await axios({
-                 url: url+'lawyerLogin',
-                 method:'POST',
-                 headers: {"content-type": 'application/json' },
-                 data: data
-             })
-             console.log(data+"inside lawyer")
-             break
-         }
-         case "Police":{
-             result = await axios({
-                 url: url+'policeColl',
-                 method:'POST',
-                 headers: {"content-type": 'application/json' },
-                 data: data
-             })
-             console.log(data+"inside police")
-             break
-         }
+    switch (select) {
+        case "Lawyer":
+            {
+                result = await axios({
+                    url: url + 'lawyerLogin',
+                    method: 'POST',
+                    headers: { "content-type": 'application/json' },
+                    data: data
+                })
+                console.log(data + "inside lawyer")
+                break
+            }
+        case "Police":
+            {
+                result = await axios({
+                    url: url + 'policeColl',
+                    method: 'POST',
+                    headers: { "content-type": 'application/json' },
+                    data: data
+                })
+                console.log(data + "inside police")
+                break
+            }
 
-         case "Judge":{
-             result = await axios({
-                 url: url+'judgeLogin',
-                 method:'POST',
-                 headers: {"content-type": 'application/json' },
-                 data: data
-             })
-             console.log(data+"inside judge")
-             break
-         }
-         case "User":{
-             result = await axios({
-                 url: url+'login',
-                 method:'POST',
-                 headers: {"content-type": 'application/json' },
-                 data: data
-             })
-             console.log(data+"inside user")
-            break
-         }
-     }
-     localStorage.setItem("token",result.data.token);
+        case "Judge":
+            {
+                result = await axios({
+                    url: url + 'judgeLogin',
+                    method: 'POST',
+                    headers: { "content-type": 'application/json' },
+                    data: data
+                })
+                console.log(data + "inside judge")
+                break
+            }
+        case "User":
+            {
+                result = await axios({
+                    url: url + 'login',
+                    method: 'POST',
+                    headers: { "content-type": 'application/json' },
+                    data: data
+                })
+                console.log(data + "inside user")
+                break
+            }
+    }
+    localStorage.setItem("token", result.data.token);
 
 }
 
-async function register () {
+async function register() {
     let result, data
     data = {
         username: document.getElementById('name').value,
@@ -72,11 +76,11 @@ async function register () {
         category: select
     }
     result = await axios({
-        url: url+'register',
-        method:'POST',
-        headers: {"content-type": 'application/json' },
+        url: url + 'register',
+        method: 'POST',
+        headers: { "content-type": 'application/json' },
         data: data
     })
-    localStorage.setItem("token",result.data.token);
+    localStorage.setItem("token", result.data.token);
     console.log(data)
 }

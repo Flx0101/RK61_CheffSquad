@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>e-Varta</title>
+
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel='stylesheet' href='/css/video.css' type="text/css">
+    <script src='/socket.io/socket.io.js'></script>
+    <script type="module" src='/js/rtc.js'></script>
+    <script type="module" src='/js/events.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/7.3.0/adapter.min.js" integrity="sha256-2qQheewaqnZlXJ3RJRghVUwD/3fD9HNqxh4C+zvgmF4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js'></script>
+    <script src='https://cdn.rawgit.com/yahoo/xss-filters/master/dist/xss-filters.js'></script>
+
+</head>
+
+<body>
+    <div class="container-fluid room-comm" hidden>
+
+        <div class="row">
+            <div style="display: -moz-stack;">
+
+                <div class="videospace" id="videos">
+
+                </div>
+
+                <div class="top-controls">
+                    <div class="icon-top">
+                        <button class="btn btn-sm text-white btn-no-effect">
+                            <i class="fa fa-user-plus fa-2x" aria-hidden="true" onclick="addNewMember()"></i>
+                        </button>
+                    </div>
+                    <div class="icon-top">
+                        <button class="btn btn-sm text-white btn-no-effect" id='toggle-chat-pane'>
+                            <i class="fa fa-comment fa-2x" aria-hidden="true"></i> <span class="badge badge-danger very-small font-weight-lighter" id='new-chat-notification' hidden>New</span>
+                        </button>
+                    </div>
+                    <video style="width: 64px; height: 100%; border-radius: 8px;" class="mirror-mode" id='local' volume='0' autoplay muted></video>
+                </div>
+
+                <div class="bottom-visible-switch">
+
+                </div>
+
+                <div class="bottom-controls room-comm" hidden>
+                    <div>
+                        Meeting Details
+                    </div>
+                    <div class="icon">
+                        <button class="btn btn-sm rounded-0 btn-no-effect text-white" id='toggle-mute' title="Mute">
+                            <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+
+                    <div class="icon">
+                        <button class="btn btn-sm rounded-0 btn-no-effect text-white">
+                            <a href="/video"><i class="fa fa-phone fa-2x" aria-hidden="true"></i></a>
+                        </button>
+                    </div>
+
+                    <div class="icon">
+                        <button class="btn btn-sm rounded-0 btn-no-effect text-white" id='toggle-video' title="Hide Video">
+                            <i class="fa fa-video fa-2x" aria-hidden="true"></i>
+                        </button>
+
+                    </div>
+                    <div>
+                        <button class="btn btn-sm rounded-0 btn-no-effect" id='share-screen' title="Share screen">
+                            <i class="fa fa-desktop fa-2x text-white"></i>
+                        </button><br/> Share Screen
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 chat-col d-print-none mb-2 bg-info" id='chat-pane' hidden>
+                <div class="row">
+                    <div class="col-12 text-center h2 mb-3">CHAT</div>
+                </div>
+
+                <div id='chat-messages'></div>
+
+                <div class="row">
+                    <textarea id='chat-input' class="form-control rounded-0 chat-box border-info" rows='3' placeholder="Type here..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

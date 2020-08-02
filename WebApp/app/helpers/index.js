@@ -1,7 +1,6 @@
 'use strict';
 const router = require('express').Router();
 const db = require('../db');
-const crypto = require('crypto');
 
 let _registerRoutes = (routes, method) => {
     for (let key in routes) {
@@ -18,14 +17,12 @@ let _registerRoutes = (routes, method) => {
             }
         }
     }
-
 }
 
 let route = routes => {
     _registerRoutes(routes);
     return router;
 }
-
 
 module.exports = {
     router,
