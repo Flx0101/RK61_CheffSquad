@@ -20,59 +20,59 @@ let memberMiddleware = require('./../middleware/videoAuth');
 //  https://fb7fa2aa984f.ngrok.io/video?room=temp_1923220304
 
 
-routes.get('/video' ,middleware.checkToken,memberMiddleware.memberCheck,(req , res , next) => {
+routes.get('/video', middleware.checkToken, memberMiddleware.memberCheck, (req, res, next) => {
     res.send("hello");
 });
 
 routes.get('/cases', middleware.checkToken, (req, res, next) => {
-let email = req.decoded.email;
+    let email = req.decoded.email;
 
-MongoClient.connect(config.dbURI, (err, client) => {
-    console.log(email);
-    client.db(config.dbName).collection(config.casesColl).find({
-            "members": email
-        }).toArray()
-        .then((doc) => {
-            console.log(doc);
-            res.json(doc);
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(500).json({
-                "message": "Fetching failed",
-                "description": err
+    MongoClient.connect(config.dbURI, (err, client) => {
+        console.log(email);
+        client.db(config.dbName).collection(config.casesColl).find({
+                "members": email
+            }).toArray()
+            .then((doc) => {
+                console.log(doc);
+                res.json(doc);
             })
-        });
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json({
+                    "message": "Fetching failed",
+                    "description": err
+                })
+            });
 
-});
+    });
 });
 
 routes.post('/registerCase', (req, res, next) => {
     var det = new Case({
-            description: req.body.desc,
-            date: req.body.date,
-            members: req.body.members
-        });
-        det.date = new Date(det.date);
-        console.log(det);
-        console.log(typeof(det.date));
-        MongoClient.connect(config.dbURI, (err, client) => {
-            client.db(config.dbName).collection(config.casesColl).insertOne(det)
-                .then((det) => {
-                    console.log(det);
-                    res.status(200).json({
-                        "success" : true,
+        description: req.body.desc,
+        date: req.body.date,
+        members: req.body.members
+    });
+    det.date = new Date(det.date);
+    console.log(det);
+    console.log(typeof(det.date));
+    MongoClient.connect(config.dbURI, (err, client) => {
+        client.db(config.dbName).collection(config.casesColl).insertOne(det)
+            .then((det) => {
+                console.log(det);
+                res.status(200).json({
+                        "success": true,
                         "msg": "Successfully registered",
                     })
                     .catch((err) => {
                         res.status(500).json({
-                            "success" : false,
-                            "message" : "Failed to upload"
+                            "success": false,
+                            "message": "Failed to upload"
                         })
                     })
-                })
-                .catch((err) => console.log(err));
-        });
+            })
+            .catch((err) => console.log(err));
+    });
 
 });
 
@@ -91,14 +91,15 @@ routes.post("/registerMeeting", middleware.checkToken, (req, res, next) => {
             .then((det) => {
                 console.log(det._doc);
                 res.status(200).json({
-                    success : true,
-                    "message" : "Meeting Registered"});
+                    success: true,
+                    "message": "Meeting Registered"
+                });
             })
             .catch((err) => {
                 res.status(403).json({
                     "message": "Error occured",
-                    "Detail": err , 
-                    "success" : false
+                    "Detail": err,
+                    "success": false
                 });
             })
     });
@@ -110,7 +111,10 @@ module.exports = () => {
     let routes = {
         'get': {
             '/': (req, res, next) => {
-                res.render('login');
+                res.render('index');
+            },
+            '/video': (req, res, next) => {
+                res.render('video');
             },
             '/dashboard': (req, res, next) => {
                 res.render('dashboard');
@@ -148,9 +152,9 @@ module.exports = () => {
                     client.db(config.dbName).collection(category).insertOne(det)
                         .then((det) => {
                             console.log("Saved");
-                            return res.status(200).send({ 
-                                message: "Done" 
-                                ,success : true
+                            return res.status(200).send({
+                                message: "Done",
+                                success: true
                             });
                         }).catch(err => console.log(err));
                 });
@@ -186,9 +190,9 @@ module.exports = () => {
                         }).catch((err) => {
                             res.status(500).json({
 
-                                "success" : false,
-                                "error_status" : true,
-                                "message" : err
+                                "success": false,
+                                "error_status": true,
+                                "message": err
                             })
                         });
                 });
@@ -224,9 +228,9 @@ module.exports = () => {
 
                         }).catch((err) => {
                             res.status(500).json({
-                                success : false,
-                                error_status : true,
-                                "message" : err
+                                success: false,
+                                error_status: true,
+                                "message": err
                             })
                             console.log(err);
                         });
