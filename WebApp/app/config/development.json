@@ -1,5 +1,5 @@
 {
-    "host": "http://localhost:3000",
+    "host": "http://127.0.0.1:3000",
     "dbURI": "mongodb+srv://chatAppUser:chatAppPassword@cluster0.sav78.mongodb.net/ChatApp?retryWrites=true&w=majority",
     "dbName": "ChatApp",
     "sessionSecret": "memer",

@@ -13,7 +13,7 @@ const { render } = require('ejs');
 const routes = require('./../helpers').router;
 const Case = require('./../models/case');
 const Meeting = require('./../models/meeting');
-let memberMiddleware = require('./../middleware/videoAuth');
+let memberMiddleware = require('./../middleware/videoauth');
 
 //checking authenticated user and valid member for the meeting
 
@@ -76,20 +76,19 @@ routes.post('/registerCase', (req, res, next) => {
 
 });
 
-routes.post("/registerMeeting", middleware.checkToken, (req, res, next) => {
+routes.post("/registerMeeting", middleware.checkToken,(req, res, next) => {
     var det = {
             _id: mongoose.Types.ObjectId(),
-            caseID: req.body.caseID,
-            owner: req.decoded,
-            meetingID: req.body.meetingID,
-            meetingURL: req.body.meetingURL
+            owner: req.decoded.email,
+            meetingURL: req.body.meetingURL,
+            members : req.body.members
         }
         //Saving the meetings based on CaseID
-
+    console.log(det.members);
     MongoClient.connect(config.dbURI, (err, client) => {
-        client.db(config.dbName).collection(meetingColl).insertOne(det)
+        client.db(config.dbName).collection(config.meetingColl).insertOne(det)
             .then((det) => {
-                console.log(det._doc);
+                console.log(det);
                 res.status(200).json({
                     success : true,
                     "message" : "Meeting Registered"});
@@ -178,7 +177,7 @@ module.exports = () => {
                                     token: token
                                 });
                             } else {
-                                res.send(401).json({
+                                res.status(401).json({
                                     success: false,
                                     message: 'Incorrect username or password'
                                 });
