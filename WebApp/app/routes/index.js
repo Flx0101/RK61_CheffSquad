@@ -24,6 +24,8 @@ routes.get('/video', middleware.checkToken, memberMiddleware.memberCheck, (req, 
     res.send("hello");
 });
 
+
+
 routes.get('/cases', middleware.checkToken, (req, res, next) => {
     let email = req.decoded.email;
 
@@ -148,7 +150,7 @@ module.exports = () => {
                 }
                 MongoClient.connect(config.dbURI, (err, client) => {
 
-                    client.db(config.dbName).collection(category).insertOne(det)
+                    client.db(config.dbName).collection('users').insertOne(det)
                         .then((det) => {
                             console.log("Saved");
                             return res.status(200).send({

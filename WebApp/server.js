@@ -5,6 +5,7 @@ const chatConf = require('./app');
 const port = process.env.PORT || 3000;
 var path = require('path');
 const cors = require('cors');
+const mailer = require('./app/routes/mailer');
 
 
 const bodyParser = require('body-parser');
@@ -24,10 +25,13 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 // app.set('view engine', 'ejs');
 
+app.use("/" , mailer);
 app.use('/', chatConf.router);
+
 
 chatConf.ioServer(app).listen(port, () => {
     console.log('Server Running on Port: ', port);
+
 });
 
 module.exports = { app };
