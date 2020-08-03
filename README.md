@@ -26,7 +26,7 @@ EVarta is a Smart remote-interaction platform being developed by team ***"CheffS
 1. The machine must have latest version of NodeJs installed on a linux/windows environment
 2. To run the DesktopApp you must first run the WebApp on your server or in local environment
 
-#### Note regarding Continuous Integreation:
+#### Note regarding Continuous Integration:
 1. The Continuous Integration (CI) script integrated with the repository, first pulls the repository in a container to check out to master branch and execute npm function to check if system build is done, or if it crashes, and generates the result.
 2. After committing the push, please wait and verify the green tick which will be available within 4-5 minutes.
 3. If you see no green tick, it indicates that the build has failed. Check the build process logs in Github Action Section before you pull.
