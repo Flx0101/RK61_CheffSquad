@@ -21,7 +21,7 @@ let videoToken = require('./../middleware/videoToken');
 //  https://fb7fa2aa984f.ngrok.io/video?room=temp_1923220304
 
 
-routes.get('/video',videoToken.checkvideoToken ,(req, res, next) => {
+routes.get('/video',videoToken.checkvideoToken,memberMiddleware.memberCheck ,(req, res, next) => {
 
     res.render('video');
 });
@@ -88,6 +88,7 @@ routes.post("/registerMeeting", middleware.checkToken,(req, res, next) => {
             members : req.body.members
         }
         //Saving the meetings based on CaseID
+        det.members.push(det.owner);
     console.log(det.members);
     MongoClient.connect(config.dbURI, (err, client) => {
         client.db(config.dbName).collection(config.meetingColl).insertOne(det)

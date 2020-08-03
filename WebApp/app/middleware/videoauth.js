@@ -6,7 +6,10 @@ const MongoClient = require("mongodb").MongoClient;
 let memberCheck = (req , res , next) => {
 
     //req.decoded = middleware.checkToken; \
-    entireURL = config.host + req.url;
+    entireURL = req.url;
+
+    entireURL = req.protocol + '://' + req.get('host') + entireURL.split("&",1)[0];
+    var fullUrl =  + req.originalUrl;
     console.log(entireURL);
     emailID = req.decoded.email;
     console.log(emailID);
@@ -21,10 +24,8 @@ let memberCheck = (req , res , next) => {
             console.log(doc)
             if (doc.length == 1){
                 if(doc[0].members.includes(emailID)){
-                    return res.status(200).send({
-                        "success" : true,
-                        "message" : "Success : You are authorized"
-                    })
+                    
+                    next();
                 }
                 else{
                     return res.status(403).send({
