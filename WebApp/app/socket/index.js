@@ -1,8 +1,13 @@
+var temp = []
+
 const stream = (socket) => {
     socket.on('subscribe', (data) => {
         socket.join(data.room);
         socket.join(data.socketId);
 
+        console.log("temp:faa " + data.socketId);
+        temp.push(data.socketId);
+        console.log("temp: " + temp);
         if (socket.adapter.rooms[data.room].length > 1) {
             console.log("SocketId: " + data.socketId);
             socket.to(data.room).emit('new user', { socketId: data.socketId });

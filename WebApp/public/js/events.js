@@ -1,13 +1,13 @@
 import helper from './helper.js';
 
 window.addEventListener('load', () => {
-    let roomName = "roomName";
+    let roomName = "";
     let yourName = "userName";
     console.log(roomName + " " + yourName);
     sessionStorage.setItem('username', yourName);
 
     if (roomName && yourName) {
-        let roomLink = `${ location.origin }/video?room=${ roomName.trim().replace( ' ', '_' )}23423234`;
+        let roomLink = `${ location.origin }/video?room=${ roomName.trim().replace( ' ', '_' )}_${ Date.now() }`;
         console.log(roomLink);
     }
     document.getElementById('local').addEventListener('click', () => {

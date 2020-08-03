@@ -1,20 +1,21 @@
 import helper from './helper.js';
 
+
 window.addEventListener('load', () => {
     var room = ''
-    console.log(location.href);
     if (location.href != " " && (decodeURIComponent(location.href).split('=', 2)[1]).length) {
         console.log('location.href is not an empty string')
+        console.log(location.href);
         room = decodeURIComponent(location.href).split('=', 2)[1]
-        console.log(room);
-        room = location.href.split("&" , 1)[0];
-        console.log(room);
+        room = room.split('&', 1)[0];
+        console.log("Final room:" + room);
         const username = sessionStorage.getItem('username');
         let commElem = document.getElementsByClassName('room-comm');
         for (let i = 0; i < commElem.length; i++) {
             commElem[i].attributes.removeNamedItem('hidden');
         }
         var fileInput = document.querySelector('input#fileInput');
+
         var downloadAnchor = document.querySelector('a#download');
 
         var socketId = '';
@@ -28,38 +29,9 @@ window.addEventListener('load', () => {
         const BYTES_PER_CHUNK = 1200;
         var file;
         var currentChunk;
-        var fileInput = $('input[type=file]');
+        var fileInput = document.querySelector('input#fileInput');
         var fileReader = new FileReader();
 
-        function readNextChunk() {
-            var start = BYTES_PER_CHUNK * currentChunk;
-            var end = Math.min(file.size, start + BYTES_PER_CHUNK);
-            fileReader.readAsArrayBuffer(file.slice(start, end));
-        }
-
-        fileReader.onload = function() {
-            let data = {
-                room: room,
-                result: fileReader.result
-            }
-            socket.emit('file-send-room-result', data);
-            currentChunk++;
-            if (BYTES_PER_CHUNK * currentChunk < file.size) {
-                readNextChunk();
-            }
-        };
-        fileInput.on('change', function() {
-            file = fileInput[0].files[0];
-            currentChunk = 0;
-            console.log("Reached in fileInput");
-            let data = {
-                room: room,
-                fileName: file.name,
-                fileSize: file.size
-            }
-            socket.emit('file-send-room', data);
-            readNextChunk();
-        });
 
 
         var incomingFileInfo;
@@ -108,7 +80,7 @@ window.addEventListener('load', () => {
         getSetStream();
 
         socket.on('connect', () => {
-
+            console.log("Logged into the socket stage");
 
             socketId = socket.io.engine.id;
             socket.emit('subscribe', {
@@ -493,5 +465,37 @@ window.addEventListener('load', () => {
                 }, 50);
             }
         });
+
+        function readNextChunk() {
+            var start = BYTES_PER_CHUNK * currentChunk;
+            var end = Math.min(file.size, start + BYTES_PER_CHUNK);
+            fileReader.readAsArrayBuffer(file.slice(start, end));
+        }
+
+        fileReader.onload = function() {
+            let data = {
+                room: room,
+                result: fileReader.result
+            }
+            socket.emit('file-send-room-result', data);
+            currentChunk++;
+            if (BYTES_PER_CHUNK * currentChunk < file.size) {
+                readNextChunk();
+            }
+        };
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            console.log(e);
+            file = e.files[0];
+            currentChunk = 0;
+            console.log("Reached in fileInput");
+            let data = {
+                room: room,
+                fileName: file.name,
+                fileSize: file.size
+            }
+            socket.emit('file-send-room', data);
+            readNextChunk();
+        });
+
     }
 });
