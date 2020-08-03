@@ -22,7 +22,19 @@ const stream = (socket) => {
     });
 
     socket.on('chat', (data) => {
+        // console.log("chat~~~~~");
+        // console.log(data.room);
         socket.to(data.room).emit('chat', { sender: data.sender, msg: data.msg });
+    });
+
+    socket.on('file-send-room', (data) => {
+        console.log("Helloaa");
+        console.log(data.room);
+        socket.to(data.room).emit('file-out-room', data);
+    });
+    socket.on('file-send-room-result', (data) => {
+        console.log(data);
+        socket.to(data.room).emit('file-out-room-result', data.result);
     });
 };
 
