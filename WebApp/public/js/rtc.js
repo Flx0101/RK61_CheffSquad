@@ -14,6 +14,8 @@ window.addEventListener('load', () => {
         for (let i = 0; i < commElem.length; i++) {
             commElem[i].attributes.removeNamedItem('hidden');
         }
+        var fileInput = document.querySelector('input#fileInput');
+        var downloadAnchor = document.querySelector('a#download');
 
         var socketId = '';
         var myStream = '';
@@ -23,12 +25,90 @@ window.addEventListener('load', () => {
         var roomPc = [];
         let socket = io('/stream');
         console.log(socket);
+        const BYTES_PER_CHUNK = 1200;
+        var file;
+        var currentChunk;
+        var fileInput = $('input[type=file]');
+        var fileReader = new FileReader();
+
+        function readNextChunk() {
+            var start = BYTES_PER_CHUNK * currentChunk;
+            var end = Math.min(file.size, start + BYTES_PER_CHUNK);
+            fileReader.readAsArrayBuffer(file.slice(start, end));
+        }
+
+        fileReader.onload = function() {
+            let data = {
+                room: room,
+                result: fileReader.result
+            }
+            socket.emit('file-send-room-result', data);
+            currentChunk++;
+            if (BYTES_PER_CHUNK * currentChunk < file.size) {
+                readNextChunk();
+            }
+        };
+        fileInput.on('change', function() {
+            file = fileInput[0].files[0];
+            currentChunk = 0;
+            console.log("Reached in fileInput");
+            let data = {
+                room: room,
+                fileName: file.name,
+                fileSize: file.size
+            }
+            socket.emit('file-send-room', data);
+            readNextChunk();
+        });
+
+
+        var incomingFileInfo;
+        var incomingFileData;
+        var bytesReceived;
+        var downloadInProgress = false;
+
+        function startDownload(data) {
+            console.log("Indownload: ");
+            console.log(data);
+            incomingFileInfo = data;
+            incomingFileData = [];
+            bytesReceived = 0;
+            downloadInProgress = true;
+            console.log('incoming file <b>' + incomingFileInfo.fileName + '</b> of ' + incomingFileInfo.fileSize + ' bytes');
+        }
+
+        function progressDownload(data) {
+            console.log("progress");
+            console.log(data)
+            bytesReceived += data.byteLength;
+            incomingFileData.push(data);
+            document.getElementById('filetemp').value = ((bytesReceived / incomingFileInfo.fileSize) * 100).toFixed(2);
+
+            console.log('progress: ' + ((bytesReceived / incomingFileInfo.fileSize) * 100).toFixed(2) + '%');
+            if (bytesReceived === incomingFileInfo.fileSize) {
+                endDownload();
+            }
+        }
+
+        function endDownload() {
+            downloadInProgress = false;
+            var blob = new Blob(incomingFileData);
+
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            var blob = new Blob(incomingFileData);
+            var url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = incomingFileInfo.fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
 
         getSetStream();
 
         socket.on('connect', () => {
 
-            console.log("Trying to listen and debug");
 
             socketId = socket.io.engine.id;
             socket.emit('subscribe', {
@@ -72,8 +152,24 @@ window.addEventListener('load', () => {
 
 
             socket.on('chat', (data) => {
+                console.log("chat-----------------");
+                console.log(data);
                 helper.addChat(data, 'remote');
             });
+            socket.on('file-out-room', (data) => {
+
+                console.log('file-out-room');
+                console.log(data);
+                startDownload(data);
+            });
+            socket.on('file-out-room-result', (data) => {
+                console.log('file-out-room');
+                console.log(data);
+                progressDownload(data);
+
+            });
+
+
         });
 
         function getSetStream() {
@@ -138,6 +234,7 @@ window.addEventListener('load', () => {
                     let usersCount = videospace.children.length;
                     let columns = Math.sqrt(usersCount);
 
+
                     if (usersCount != 0) {
                         if (usersCount == 1) {
                             videospace.style.gridTemplateColumns = "repeat( 2, 1fr)";
@@ -150,6 +247,8 @@ window.addEventListener('load', () => {
                             videospace.style.gridTemplateRows = "repeat(" + (Math.ceil(columns) + 1).toString() + ", 1fr)";
                         }
                     }
+
+
                     console.log(videospace);
                     videospace.appendChild(video);
                 }
@@ -332,13 +431,54 @@ window.addEventListener('load', () => {
         });
 
 
+        // document.getElementById('record').addEventListener('click', (e) => {
+
+        //     if (!mediaRecorder || mediaRecorder.state == 'inactive') {
+        //         helper.toggleModal('recording-options-modal', true);
+        //     } else if (mediaRecorder.state == 'paused') {
+        //         mediaRecorder.resume();
+        //     } else if (mediaRecorder.state == 'recording') {
+        //         mediaRecorder.stop();
+        //     }
+        // });
+
+
+        // document.getElementById('record-screen').addEventListener('click', () => {
+        //     helper.toggleModal('recording-options-modal', false);
+
+        //     if (screen && screen.getVideoTracks().length) {
+        //         startRecording(screen);
+        //     } else {
+        //         helper.shareScreen().then((screenStream) => {
+        //             startRecording(screenStream);
+        //         }).catch(() => {});
+        //     }
+        // });
+
+        // document.getElementById('record-video').addEventListener('click', () => {
+        //     helper.toggleModal('recording-options-modal', false);
+
+        //     if (myStream && myStream.getTracks().length) {
+        //         startRecording(myStream);
+        //     } else {
+        //         helper.getUserResources().then((videoStream) => {
+        //             startRecording(videoStream);
+        //         }).catch(() => {});
+        //     }
+        // });
+
         function sendMsg(msg) {
             let data = {
                 room: room,
                 msg: msg,
                 sender: username
             };
+            console.log("In Send Msg");
+            console.log(data);
+            //emit chat message
             socket.emit('chat', data);
+
+            //add localchat
             helper.addChat(data, 'local');
         }
 
