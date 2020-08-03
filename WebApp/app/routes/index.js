@@ -14,14 +14,16 @@ const routes = require('./../helpers').router;
 const Case = require('./../models/case');
 const Meeting = require('./../models/meeting');
 let memberMiddleware = require('./../middleware/videoauth');
+let videoToken = require('./../middleware/videoToken');
 
 //checking authenticated user and valid member for the meeting
 
 //  https://fb7fa2aa984f.ngrok.io/video?room=temp_1923220304
 
 
-routes.get('/video', middleware.checkToken, memberMiddleware.memberCheck, (req, res, next) => {
-    res.send("hello");
+routes.get('/video',videoToken.checkvideoToken ,(req, res, next) => {
+
+    res.render('video');
 });
 
 

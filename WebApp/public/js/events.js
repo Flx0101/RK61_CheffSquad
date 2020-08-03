@@ -7,7 +7,7 @@ window.addEventListener('load', () => {
     sessionStorage.setItem('username', yourName);
 
     if (roomName && yourName) {
-        let roomLink = `${ location.origin }/video?room=${ roomName.trim().replace( ' ', '_' ) }_${ Date.now() }`;
+        let roomLink = `${ location.origin }/video?room=${ roomName.trim().replace( ' ', '_' )}23423234`;
         console.log(roomLink);
     }
     document.getElementById('local').addEventListener('click', () => {

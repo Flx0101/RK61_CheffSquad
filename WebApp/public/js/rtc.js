@@ -2,9 +2,13 @@ import helper from './helper.js';
 
 window.addEventListener('load', () => {
     var room = ''
+    console.log(location.href);
     if (location.href != " " && (decodeURIComponent(location.href).split('=', 2)[1]).length) {
         console.log('location.href is not an empty string')
         room = decodeURIComponent(location.href).split('=', 2)[1]
+        console.log(room);
+        room = location.href.split("&" , 1)[0];
+        console.log(room);
         const username = sessionStorage.getItem('username');
         let commElem = document.getElementsByClassName('room-comm');
         for (let i = 0; i < commElem.length; i++) {

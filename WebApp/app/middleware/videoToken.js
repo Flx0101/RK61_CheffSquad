@@ -1,8 +1,8 @@
 let jwt = require('jsonwebtoken');
 const config = require('./../config');
 
-let checkToken = (req, res, next) => {
-    let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+let checkvideoToken = (req, res, next) => {
+    let token = req.query.token; // Express headers are auto converted to lowercase
     if(token == null){
         return res.json({
             success: false,
@@ -40,5 +40,5 @@ let checkToken = (req, res, next) => {
 };
 
 module.exports = {
-    checkToken: checkToken
+    checkvideoToken: checkvideoToken
 }
