@@ -253,25 +253,30 @@ transition: opacity 250ms cubic-bezier(0.4,0.0,1,1),transform 250ms cubic-bezier
     display: none;
 }
 
-.sender-info {
-    font-size: smaller;
-    margin-top: 5px;
-    align-self: flex-end;
-}
 
-.msg {
+.sender-info{
+    font-size: 10px !important;
+    margin-top: 5px !important;
+    text-align: right !important;
+  }
+
+.msg{
     font-weight: 400 !important;
     font-size: 12px !important;
     width: 60%;
-    margin-top: 2%;
+    padding:3%;
     color: black !important;
     background-color: whitesmoke!important;
-}
-
-.chat-card {
-    border-radius: 6px;
-}
-
-.hide {
+    word-wrap:break-word;
+    display:block;
+  }
+  
+  
+  .chat-card{
+    border-radius: 6px !important;
+  }
+  
+ 
+.hide{
     display: none;
 }
