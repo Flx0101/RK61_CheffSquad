@@ -25,7 +25,7 @@ app.use(cors());
 app.use(express.static('public'));
 // app.set('view engine', 'ejs');
 
-app.use("/" , mailer);
+app.use("/", mailer);
 app.use('/', chatConf.router);
 
 
